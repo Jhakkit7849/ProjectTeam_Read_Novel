@@ -1,0 +1,105 @@
+:root {
+  --color-bg: #ffdfd6;
+  --color-primary: #e3a5c7;
+  --color-secondary: #b692c2;
+  --color-text: #694f8e;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+}
+
+/* Container กลางจอ */
+.signup-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+/* กล่องฟอร์ม */
+.signup-card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  text-align: center;
+}
+
+.signup-title {
+  color: var(--color-text);
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+/* ฟอร์ม */
+.form-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--color-text);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--color-secondary);
+  border-radius: 8px;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.form-group input:focus {
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: 0 0 6px var(--color-primary);
+}
+
+/* ปุ่ม */
+.btn-primary {
+  width: 100%;
+  background: var(--color-primary);
+  color: #fff;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.25s;
+  margin-top: 0.5rem;
+}
+
+.btn-primary:hover {
+  background: var(--color-secondary);
+}
+
+/* ลิงก์ไป Sign In */
+.signin-text {
+  margin-top: 1.2rem;
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.signin-text .signin-link {
+  color: var(--color-primary);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.signin-text .signin-link:hover {
+  text-decoration: underline;
+}
