@@ -1,0 +1,23 @@
+:root{ --bg:#f9cfc9; --ink:#2c2930; --primary:#7b4a91; --muted:#a48fb3; --card:#ffe1d7; }
+*{box-sizing:border-box} body{margin:0; font-family:Inter, ui-sans-serif, system-ui; color:var(--ink); background:var(--bg)}
+a{color:inherit; text-decoration:none}
+.container{max-width:1100px; margin:0 auto; padding:24px}
+.btn{display:inline-block; padding:10px 16px; border-radius:10px; background:#8f7a97; color:#fff; border:none; cursor:pointer}
+.btn.secondary{background:#d2c2d9; color:#2c2930}
+.input, select, textarea{width:100%; padding:10px 12px; border:1px solid #e0d6ea; border-radius:10px; background:white}
+.nav{background:var(--primary); color:#fff}
+.nav .wrap{display:flex; align-items:center; gap:16px; padding:16px 24px}
+.nav .brand{font-weight:700; letter-spacing:0.5px}
+.grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+.card{background:var(--card); border-radius:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.card img{width:100%; aspect-ratio:3/4; object-fit:cover}
+.card .p{padding:10px}
+.badge{font-size:12px; padding:2px 8px; border-radius:999px; background:white; border:1px solid #ead9ef;}
+.form-grid{display:grid; gap:12px}
+.form-2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.tags{display:flex; flex-wrap:wrap; gap:8px}
+.tag{background:white; border:1px dashed #cdb9d7; padding:4px 8px; border-radius:8px;}
+.table{width:100%; border-collapse:collapse}
+.table th,.table td{padding:10px; border-bottom:1px solid #eee}
+.hero{display:flex; align-items:center; gap:24px}
+.hero img{width:240px; aspect-ratio:3/4; object-fit:cover; border-radius:16px}

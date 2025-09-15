@@ -1,0 +1,51 @@
+# --- OS / IDE ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.code-workspace
+
+# --- Logs ---
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# --- Node / Monorepo ---
+**/node_modules/
+**/.pnp
+**/.pnp.js
+
+# --- Builds / Caches ---
+**/dist/
+**/build/
+**/coverage/
+**/.cache/
+**/.vite/
+**/.turbo/
+*.tsbuildinfo
+.eslintcache
+
+# --- Env (keep examples only) ---
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# --- Temp / Uploads (ถ้ามีโฟลเดอร์อัปโหลดไฟล์ในอนาคต) ---
+**/tmp/
+**/temp/
+**/uploads/
+
+# --- Misc editors ---
+*~
+*.swp
+*.swo
