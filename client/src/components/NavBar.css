@@ -13,6 +13,11 @@
   width: 100%;
   box-sizing: border-box;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  position: sticky;          /* ✅ ติดอยู่ด้านบนเมื่อเลื่อน */
+  top: 0;
+  z-index: 1000;           
+  
+
 }
 
 /* ✅ ลบเส้นใต้ลิงก์ + สไตล์ */
@@ -28,13 +33,41 @@
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;          /* ✅ เพิ่มช่องว่างให้กว้างขึ้น */
   margin: 0;
   padding: 0;
-  align-self: center;
+  align-items: center; /* ใช้ align-items แทน align-self */
+  
 }
+
 
 /* เอฟเฟกต์ hover */
 .navbar a:hover {
   color: var(--color-secondary);
+}
+
+.search-box {
+  width: 100%;
+  max-width: 300px;         /* จำกัดความกว้างไม่ให้ยาวเกิน */
+  padding: 0.7rem 1rem;
+  border: 2px solid var(--color-secondary);
+  border-radius: 25px;      /* ✅ ทำให้โค้งเหมือน capsule */
+  font-size: 0.75rem;
+  color: var(--color-text);
+  background: #fff;
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  max-width: 200px;
+  flex: 0 0 auto;
+}
+
+.search-box::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+.search-box:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 8px var(--color-primary);
 }

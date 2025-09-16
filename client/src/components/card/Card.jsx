@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Card.css";
 
 const Card = ({title, desc, img}) => {
@@ -15,7 +16,7 @@ const Card = ({title, desc, img}) => {
         </p>
         <div className="card-actions">
           <button className="btn btn-primary">Read</button>
-          <button className="btn btn-secondary">Detail</button>
+          <button className="btn btn-secondary"><Link to={"/Details"} style={{ textDecoration: "none", color: "inherit" }} >Detail</Link></button>
         </div>
       </div>
     </div>

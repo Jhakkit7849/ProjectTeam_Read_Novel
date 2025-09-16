@@ -1,0 +1,119 @@
+:root {
+  --color-bg: #ffdfd6;
+  --color-primary: #e3a5c7;
+  --color-secondary: #b692c2;
+  --color-text: #694f8e;
+  --color-button: #a89984;
+}
+
+/* container */
+.details-container {
+  background: var(--color-bg);
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+/* layout ส่วนบน */
+.details-top {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.details-cover {
+  width: 280px;
+  height: 380px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.details-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;   /* ✅ ให้ actions ดันลงล่าง */
+}
+
+.details-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--color-text);
+}
+
+.details-desc {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: var(--color-text);
+  flex-grow: 1;             /* ✅ ดันให้ actions เกาะล่าง */
+}
+
+.details-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-top: auto;         /* ✅ เกาะขอบล่าง */
+}
+
+/* ปุ่มหลัก */
+.btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+  min-width: 160px;        /* ✅ ความกว้างขั้นต่ำเท่ากัน */
+  text-align: center;
+  box-sizing: border-box;  /* ✅ รวม border เข้าขนาด */
+}
+
+.btn-primary {
+  background: var(--color-button);
+  color: #fff;
+  border: 2px solid var(--color-button);
+}
+
+.btn-primary:hover {
+  background: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+.btn-outline {
+  background: #fff;
+  color: var(--color-text);
+  border: 2px solid #000;
+}
+
+.btn-outline:hover {
+  background: var(--color-bg);
+}
+
+/* ตอนทั้งหมด */
+.details-chapters {
+  margin-top: 2rem;
+}
+
+.details-chapters h2 {
+  margin-bottom: 0.5rem;
+  color: var(--color-text);
+}
+
+.chapter-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;   /* ✅ ปุ่มเกาะขอบล่าง */
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #ccc;
+  gap: 1rem;
+}
+
+.chapter-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.chapter-item button {
+  min-width: 160px;      /* ✅ ให้เท่ากับปุ่มบน */
+}

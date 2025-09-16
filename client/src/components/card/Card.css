@@ -1,18 +1,13 @@
-:root {
-  --color-bg: #ffdfd6;
-  --color-primary: #e3a5c7;
-  --color-secondary: #b692c2;
-  --color-text: #694f8e;
-}
-
 .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   overflow: hidden;
-  width: 300px;
+  width: 320px;             /* ✅ กว้างขึ้นนิด */
   transition: transform 0.2s;
-  
 }
 
 .card:hover {
@@ -21,43 +16,51 @@
 
 .card-img {
   width: 100%;
-  height: 180px;
+  height: 220px;            /* ✅ สูงขึ้น */
   object-fit: cover;
 }
 
 .card-body {
-  padding: 1rem;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 1.2rem 1.4rem;   /* ✅ padding รอบๆ มากขึ้น */
+  text-align: left;
+  box-sizing: border-box;
+  gap: 0.8rem;              /* ✅ ช่องว่างระหว่าง child elements */
 }
 
 .card-title {
-  margin: 0.5rem 0;
-  font-size: 1.3rem;
+  margin: 0;
+  font-size: 1.4rem;        /* ✅ ใหญ่ขึ้นเล็กน้อย */
   font-weight: bold;
   color: var(--color-text);
 }
 
 .card-desc {
-  font-size: 0.9rem;
+  flex-grow: 1;
+  font-size: 1rem;          /* ✅ อ่านง่ายขึ้น */
+  line-height: 1.5;         /* ✅ ระยะห่างบรรทัด */
   color: #555;
-  margin-bottom: 1rem;
 }
 
 .card-actions {
+  margin-top: auto;
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 1rem;
+  padding-bottom: 0.8rem 1rem;   /* ✅ เพิ่ม breathing space */;
 }
 
 /* ปุ่ม */
 .btn {
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.2rem;   /* ✅ ปุ่มใหญ่ขึ้นเล็กน้อย */
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
   transition: 0.2s;
+  font-size: 0.95rem;       /* ✅ ให้ขนาดอักษรพอดี */
 }
 
 .btn-primary {
