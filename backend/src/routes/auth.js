@@ -2,28 +2,36 @@ import { Router } from 'express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { q } from '../db.js'
-import { registerRules } from '../validators/authValidators.js'
-import { validationResult } from 'express-validator'
 
 
 const router = Router()
 
 
-router.post('/register', registerRules, async (req, res) => {
-const errors = validationResult(req)
-if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })
-const { email, password, display_name } = req.body
-const exists = await q('SELECT 1 FROM users WHERE email=$1', [email])
-if (exists.rowCount) return res.status(409).json({ message: 'Email already registered' })
-const hash = await bcrypt.hash(password, 10)
-const result = await q(
-`INSERT INTO users(email, password_hash, display_name)
-VALUES ($1,$2,$3) RETURNING id, email, display_name, role`,
-[email, hash, display_name]
-)
-const user = result.rows[0]
-const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '7d' })
-res.json({ token, user })
+router.post('/register', async (req, res) => {
+  try {
+    const { email, password, display_name } = req.body || {}
+    if (!display_name || !display_name.trim()) return res.status(400).json({ message: 'display_name is required' })
+    if (!email || !/\S+@\S+\.\S+/.test(email)) return res.status(400).json({ message: 'invalid email' })
+    if (!password || password.length < 8) return res.status(400).json({ message: 'password too short (min 8)' })
+
+    const hash = await bcrypt.hash(password, 10)
+    const r = await q(
+      `INSERT INTO users(email, password_hash, display_name)
+       VALUES ($1,$2,$3)
+       RETURNING id, email, display_name, role`,
+      [email.trim().toLowerCase(), hash, display_name.trim()]
+    )
+    const user = r.rows[0]
+    const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '7d' })
+    res.json({ token, user })
+  } catch (e) {
+    // handle unique violation (email ซ้ำ)
+    if (e.code === '23505') {
+      return res.status(409).json({ message: 'อีเมลนี้ถูกใช้แล้ว' })
+    }
+    console.error('register error', e)
+    res.status(500).json({ message: 'signup failed' })
+  }
 })
 
 
