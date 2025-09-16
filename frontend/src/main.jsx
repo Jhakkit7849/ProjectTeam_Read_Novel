@@ -28,7 +28,7 @@ return (
 <Route path="/novels/:slug" element={<NovelDetail />} />
 <Route path="/write/chapter" element={<ChapterEditor />} />
 <Route path="/read/:id" element={<ChapterRead />} />
-<Route path="/novels/my-works" element={<MyWorks />} />
+<Route path="/my-works" element={<MyWorks />} />
 </Routes>
 </BrowserRouter>
 )
