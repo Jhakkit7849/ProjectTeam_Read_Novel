@@ -9,6 +9,9 @@ const CATEGORIES = [
   { id: 1, name: "โรแมนติก" },
   { id: 2, name: "แฟนตาซี" },
   { id: 3, name: "ดราม่า" },
+  { id: 4, name: "ลึกลับ" },
+  { id: 5, name: "สยองขวัญ" },
+  { id: 6, name: "คอมมาดี้" },
 ];
 
 export default function NovelNewOrEdit() {

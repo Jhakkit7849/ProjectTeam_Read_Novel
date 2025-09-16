@@ -12,8 +12,7 @@ export default function Navbar() {
         </Link>
         <Link to="/library">คลังของฉัน</Link>
         <Link to="/rankings">อันดับ</Link>
-        {user && <Link to="/write/new" style={{ marginLeft: 12 }}>เขียนนิยาย</Link>}
-        {user && <Link to="/my-works" style={{ marginLeft: 12 }}>ผลงานของฉัน</Link>}
+        {user && <Link to="/writing" style={{ marginLeft: 12 }}>Writing</Link>}
         <div style={{ marginLeft: "auto" }} />
         {user ? (
           <>

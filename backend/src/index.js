@@ -12,7 +12,7 @@ import library from './routes/library.js'
 import donations from './routes/donations.js'
 import search from './routes/search.js'
 import rankings from './routes/rankings.js'
-
+import categories from './routes/categories.js'
 
 const app = express()
 
@@ -36,7 +36,7 @@ app.use('/api/library', library)
 app.use('/api/donations', donations)
 app.use('/api/search', search)
 app.use('/api/rankings', rankings)
-
+app.use('/api/categories', categories)
 
 const port = process.env.PORT || 5000
 app.listen(port, ()=> console.log('API on :' + port))

@@ -22,9 +22,7 @@ export default function ChapterRead(){
   },[id])
 
   // ใช้เฉพาะตอนที่เผยแพร่เพื่อ next/prev (ผู้อ่านทั่วไป)
-  const navList = useMemo(()=>{
-    return list.filter(c=>c.is_published).sort((a,b)=>a.number-b.number)
-  }, [list])
+  const navList = useMemo(()=> list.filter(c=>c.is_published).sort((a,b)=>a.number-b.number), [list])
 
   const pos = useMemo(()=>{
     if (!ch) return -1
@@ -37,10 +35,22 @@ export default function ChapterRead(){
   if(!ch) return null
   return (
     <div className="container" style={{maxWidth:900}}>
+      {/* แถบบน: ปุ่มกลับไปหน้าเรื่อง */}
+      <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:12}}>
+        <button
+          className="btn secondary"
+          onClick={()=> ch?.novel_slug && nav(`/novels/${ch.novel_slug}`)}
+          title="กลับไปหน้า NovelDetail"
+        >
+          ← กลับไปหน้าเรื่อง
+        </button>
+      </div>
+
       <div style={{marginBottom:8, color:'#6a6072'}}>บทที่ {ch.number}</div>
       <h2>{ch.title}</h2>
       <div dangerouslySetInnerHTML={{__html: ch.content_html}} />
 
+      {/* แถบล่าง: ปุ่มก่อนหน้า/ถัดไป */}
       <div style={{display:'flex', justifyContent:'space-between', marginTop:24}}>
         <button className="btn secondary" disabled={!prevId} onClick={()=> prevId && nav(`/read/${prevId}`)}>ตอนก่อนหน้า</button>
         <button className="btn" disabled={!nextId} onClick={()=> nextId && nav(`/read/${nextId}`)}>ตอนถัดไป</button>
