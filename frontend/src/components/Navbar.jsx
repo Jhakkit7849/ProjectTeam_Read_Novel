@@ -10,9 +10,12 @@ export default function Navbar() {
         <Link className="brand" to="/">
           GEE AEY Y
         </Link>
-        <Link to="/library">คลังของฉัน</Link>
         <Link to="/rankings">อันดับ</Link>
         {user && <Link to="/writing" style={{ marginLeft: 12 }}>Writing</Link>}
+        {user?.role === 'admin' && <Link to="/admin/users" style={{ marginLeft: 12 }}>Admin: ผู้ใช้</Link>}
+        {user?.role === 'admin' && <Link to="/admin/novels" style={{ marginLeft: 12 }}>Admin: นิยาย</Link>}
+        {user?.role === 'admin' && <Link to="/admin/rankings" style={{ marginLeft: 12 }}>Admin: อันดับ</Link>}
+        {user?.role === 'admin' && <Link to="/library">คลังของฉัน</Link>}
         <div style={{ marginLeft: "auto" }} />
         {user ? (
           <>

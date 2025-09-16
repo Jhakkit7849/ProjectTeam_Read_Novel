@@ -17,6 +17,10 @@ export default function Profile(){
   const [donations,setDonations] = useState([])
   const [busy,setBusy] = useState(false)
 
+  const [loadingHistory, setLoadingHistory] = useState(false)
+  const [loadingDonations, setLoadingDonations] = useState(false)
+  const [showPending, setShowPending] = useState(false) // ตัวกรองโดเนท
+
   useEffect(()=>{
     if (!loading && !user) nav('/signin')
   },[user, loading, nav])
@@ -28,8 +32,14 @@ export default function Profile(){
       setU(r.data)
       setForm(r.data || {})
       // load lists
-      API.get('/library/history').then(r=> setHistory(r.data || []))
-      API.get('/donations/me').then(r=> setDonations(r.data || []))
+      setLoadingHistory(true)
+      setLoadingDonations(true)
+      API.get('/library/history')
+        .then(r=> setHistory(r.data || []))
+        .finally(()=> setLoadingHistory(false))
+      API.get('/donations/me')
+        .then(r=> setDonations(r.data || []))
+        .finally(()=> setLoadingDonations(false))
     }
     load()
   },[user])
@@ -44,6 +54,36 @@ export default function Profile(){
   }
 
   const avatar = useMemo(()=> u?.avatar_url || 'https://placehold.co/120x120?text=+' , [u])
+
+  // === สรุปโดเนท ===
+  const paidDonations = useMemo(
+    ()=> (donations||[]).filter(d => d.status === 'paid'),
+    [donations]
+  )
+  const totalPaid = useMemo(
+    ()=> paidDonations.reduce((sum,d)=> sum + Number(d.amount||0), 0),
+    [paidDonations]
+  )
+  const shownDonations = useMemo(()=>{
+    if (showPending) return donations
+    return (donations||[]).filter(d => d.status === 'paid')
+  }, [donations, showPending])
+
+  const StatusBadge = ({status})=>{
+    const map = {
+      paid:   { bg:'#dcfce7', bd:'#86efac', fg:'#166534', text:'ชำระแล้ว' },
+      pending:{ bg:'#fff7ed', bd:'#fed7aa', fg:'#9a3412', text:'รอดำเนินการ' },
+      failed: { bg:'#fee2e2', bd:'#fecaca', fg:'#991b1b', text:'ล้มเหลว' },
+      refunded:{ bg:'#e0e7ff', bd:'#c7d2fe', fg:'#3730a3', text:'คืนเงิน' },
+    }
+    const s = map[status] || map.pending
+    return (
+      <span style={{
+        padding:'2px 8px', borderRadius:9999, fontSize:12, fontWeight:700,
+        background:s.bg, border:`1px solid ${s.bd}`, color:s.fg
+      }}>{s.text}</span>
+    )
+  }
 
   if (loading || !user) return null
 
@@ -98,7 +138,7 @@ export default function Profile(){
       {/* Switcher */}
       <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop:16}}>
         <div style={{fontWeight:600}}>ประวัติ</div>
-        <select className="input" style={{maxWidth:220}}
+        <select className="input" style={{maxWidth:260}}
           value={mode} onChange={e=>setMode(e.target.value)}>
           <option value="history">ประวัติการอ่าน</option>
           <option value="donations">ประวัติการโดเนท</option>
@@ -108,7 +148,8 @@ export default function Profile(){
       {/* Lists */}
       {mode === 'history' ? (
         <div style={{marginTop:16}} className="grid">
-          {(history||[]).map(item=> (
+          {loadingHistory && <div style={{padding:24}}>กำลังโหลด…</div>}
+          {!loadingHistory && (history||[]).map(item=> (
             <div key={item.id} className="card">
               <img src={item.cover_url || 'https://placehold.co/300x400?text=Cover'} />
               <div className="p">
@@ -122,28 +163,64 @@ export default function Profile(){
               </div>
             </div>
           ))}
-          {(!history || history.length===0) && (
+          {!loadingHistory && (!history || history.length===0) && (
             <div style={{padding:24, color:'#6a6072'}}>ยังไม่มีประวัติการอ่าน</div>
           )}
         </div>
       ) : (
         <div style={{marginTop:16}}>
-          {(!donations || donations.length===0) && (
+          {/* Summary */}
+          <div className="card" style={{padding:16, display:'flex', alignItems:'center', justifyContent:'space-between', gap:12}}>
+            <div>
+              <div style={{fontWeight:700}}>สรุปการโดเนท</div>
+              <div style={{color:'#6a6072', fontSize:14}}>
+                รวมทั้งหมด {paidDonations.length} ครั้ง • {Number(totalPaid).toLocaleString()} บาท (ชำระสำเร็จ)
+              </div>
+            </div>
+            <label style={{display:'flex', alignItems:'center', gap:8}}>
+              <input
+                type="checkbox"
+                checked={showPending}
+                onChange={e=>setShowPending(e.target.checked)}
+              />
+              แสดงสถานะที่ยังไม่สำเร็จ (pending/failed/refunded)
+            </label>
+          </div>
+
+          {loadingDonations && <div style={{padding:24}}>กำลังโหลด…</div>}
+
+          {!loadingDonations && (!donations || donations.length===0) && (
             <div style={{padding:24, color:'#6a6072'}}>ยังไม่มีประวัติการโดเนท</div>
           )}
-          {(donations||[]).map(d=> (
-            <div key={d.id} className="card" style={{padding:16}}>
-              <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-                <div>
-                  <div style={{fontWeight:700}}>โดเนท {Number(d.amount).toLocaleString()} บาท</div>
-                  <div style={{fontSize:12, color:'#6a6072'}}>{new Date(d.created_at).toLocaleString()}</div>
-                  {d.message && <div style={{marginTop:6}}>{d.message}</div>}
+
+          {!loadingDonations && shownDonations.map(d=> (
+            <div key={d.id} className="card" style={{padding:16, marginTop:12}}>
+              <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, flexWrap:'wrap'}}>
+                <div style={{minWidth:260}}>
+                  <div style={{display:'flex', alignItems:'center', gap:8, flexWrap:'wrap'}}>
+                    <div style={{fontWeight:700}}>
+                      โดเนท {Number(d.amount).toLocaleString()} บาท
+                    </div>
+                    <StatusBadge status={d.status}/>
+                  </div>
+                  <div style={{fontSize:12, color:'#6a6072'}}>
+                    {new Date(d.created_at).toLocaleString()}
+                    {d.paid_at ? ` • ชำระเมื่อ ${new Date(d.paid_at).toLocaleString()}` : ''}
+                  </div>
+                  {d.message && <div style={{marginTop:6, whiteSpace:'pre-wrap'}}>{d.message}</div>}
                 </div>
-                {d.novel_id && (
-                  <button className="btn secondary" onClick={()=> nav(`/novels/${d.novel_slug || ''}`)}>
-                    ไปหน้านิยาย
-                  </button>
-                )}
+
+                <div style={{display:'grid', gap:6}}>
+                  {d.novel_id ? (
+                    <button className="btn secondary" onClick={()=> nav(`/novels/${d.novel_slug || ''}`)}>
+                      ไปหน้านิยาย
+                    </button>
+                  ) : null}
+                  <div style={{fontSize:12, color:'#5b5164'}}>
+                    ผู้เขียน: {d.author_name || '-'}
+                    {d.novel_title ? ` • เรื่อง: ${d.novel_title}` : ''}
+                  </div>
+                </div>
               </div>
             </div>
           ))}

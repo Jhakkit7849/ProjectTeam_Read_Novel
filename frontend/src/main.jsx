@@ -15,7 +15,12 @@ import ChapterEditor from './pages/ChapterEditor'
 import ChapterRead from './pages/ChapterRead'
 import MyWorks from './pages/MyWorks'
 import Writing from './pages/Writing'
-
+import AdminUsers from './pages/AdminUsers'
+import AdminNovels from './pages/AdminNovels'
+import Rankings from './pages/Rankings'
+import AdminRankings from './pages/AdminRankings'
+import DonateSuccess from './pages/DonateSuccess'
+import DonateCancel from './pages/DonateCancel'
 function App(){ /* ... เหมือนเดิม ... */ }
 
 createRoot(document.getElementById('root')).render(
@@ -23,6 +28,7 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Navbar />
       <Routes>
+        <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
@@ -34,6 +40,11 @@ createRoot(document.getElementById('root')).render(
         <Route path="/read/:id" element={<ChapterRead />} />
         <Route path="/my-works" element={<MyWorks />} />
         <Route path="/writing" element={<Writing />} />
+        <Route path="/admin/novels" element={<AdminNovels />} />
+        <Route path="/rankings" element={<Rankings />} />
+        <Route path="/admin/rankings" element={<AdminRankings />} />
+        <Route path="/donate/success" element={<DonateSuccess />} />
+        <Route path="/donate/cancel" element={<DonateCancel />} />
       </Routes>
     </BrowserRouter>
   </AuthProvider>

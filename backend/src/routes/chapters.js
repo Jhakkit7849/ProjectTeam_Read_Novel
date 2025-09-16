@@ -100,4 +100,22 @@ router.put('/:id', requireAuth, async (req, res) => {
   res.json(r.rows[0])
 })
 
+// ลบตอน (เฉพาะเจ้าของนิยายของตอนนั้น หรือ admin)
+router.delete('/:id', requireAuth, async (req, res) => {
+  const isAdmin = req.user.role === 'admin'
+  const r = await q(
+    `DELETE FROM chapters c
+     USING novels n
+     WHERE c.id=$1 AND n.id=c.novel_id
+       AND ($2 = n.author_id OR $3)  -- owner OR admin
+     RETURNING c.novel_id`,
+    [req.params.id, req.user.id, isAdmin]
+  )
+  if (!r.rowCount) return res.status(404).json({ message: 'Not found or no permission' })
+  const novelId = r.rows[0].novel_id
+  // อัปเดตจำนวนตอน (กันค่า null)
+  await q(`UPDATE novels SET chapter_count=(SELECT COUNT(*) FROM chapters WHERE novel_id=$1) WHERE id=$1`, [novelId])
+  res.json({ ok: true })
+})
+
 export default router
