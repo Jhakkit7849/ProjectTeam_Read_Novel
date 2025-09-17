@@ -17,6 +17,7 @@ import search from './routes/search.js'
 import rankings from './routes/rankings.js'
 import categories from './routes/categories.js'
 import admin from './routes/admin.js'
+import chatbot from './routes/chatbot.js'
 
 const app = express()
 
@@ -63,6 +64,6 @@ app.use('/api/search', search)
 app.use('/api/rankings', rankings)
 app.use('/api/categories', categories)
 app.use('/api/admin', admin)
-
+app.use('/api/chatbot', chatbot)
 const port = process.env.PORT || 5000
 app.listen(port, ()=> console.log('API on :' + port))

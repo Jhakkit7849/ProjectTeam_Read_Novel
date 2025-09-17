@@ -21,11 +21,13 @@ import Rankings from './pages/Rankings'
 import AdminRankings from './pages/AdminRankings'
 import DonateSuccess from './pages/DonateSuccess'
 import DonateCancel from './pages/DonateCancel'
+import ChatbotWidget from './components/ChatbotWidget'
 function App(){ /* ... เหมือนเดิม ... */ }
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>
     <BrowserRouter>
+      <ChatbotWidget />
       <Navbar />
       <Routes>
         <Route path="/admin/users" element={<AdminUsers />} />
