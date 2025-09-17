@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 import API from "../lib/api";
 import NovelGrid from "../components/NovelGrid";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
 export default function Home() {
   const [featured, setFeatured] = useState([]);
   const [romance, setRomance] = useState([]);
@@ -10,17 +17,67 @@ export default function Home() {
   const [mystery, setMystery] = useState([]);
   const [horror, setHorror] = useState([]);
   const [comedy, setComedy] = useState([]);
+  const [images, setImages] = useState([]);
+
   useEffect(() => {
-    API.get("/novels/featured").then((r) => setFeatured(r.data));
-    API.get("/novels?q=&category_id=1").then((r) => setRomance(r.data));
-    API.get("/novels?q=&category_id=2").then((r) => setFantasy(r.data));
-    API.get("/novels?q=&category_id=3").then((r) => setDrama(r.data));
-    API.get("/novels?q=&category_id=4").then((r) => setMystery(r.data));
-    API.get("/novels?q=&category_id=5").then((r) => setHorror(r.data));
-    API.get("/novels?q=&category_id=6").then((r) => setComedy(r.data));
-  }, []);
+  Promise.all([
+    API.get("/novels/featured"),
+    API.get("/novels?q=&category_id=1"),
+    API.get("/novels?q=&category_id=2"),
+    API.get("/novels?q=&category_id=3"),
+    API.get("/novels?q=&category_id=4"),
+    API.get("/novels?q=&category_id=5"),
+    API.get("/novels?q=&category_id=6"),
+  ]).then(([f, r, fa, d, m, h, c]) => {
+    setFeatured(f.data);
+    setRomance(r.data);
+    setFantasy(fa.data);
+    setDrama(d.data);
+    setMystery(m.data);
+    setHorror(h.data);
+    setComedy(c.data);
+
+    // ✅ อัปเดต images หลังจากมีค่าของทุก category แล้ว
+    setImages([
+      f.data[0]?.cover_url,
+      r.data[0]?.cover_url,
+      fa.data[0]?.cover_url,
+      d.data[0]?.cover_url,
+      m.data[0]?.cover_url,
+      h.data[0]?.cover_url,
+      c.data[0]?.cover_url,
+    ]);
+  });
+  console.log(images);
+}, []);
+
   return (
     <div className="container">
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
+        navigation
+        pagination={{ clickable: true }}
+        autoplay={{ delay: 3000 }}
+        loop={true}
+        slidesPerView={1}
+        style={{ height: "50vh", marginBottom: "2rem" }} // สูงครึ่งจอ
+      >
+        {images.map((image, idx) => (
+          
+          <SwiperSlide key={idx}>
+            <img
+              src={image || "https://picsum.photos/536/354"}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                borderRadius: "8px",
+                
+              }}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
       <h2>นิยายแนะนำให้อ่าน</h2>
       <NovelGrid items={featured} />
       <h3 style={{ marginTop: 24 }}>หมวดหมู่: โรแมนติก</h3>
